@@ -1,6 +1,12 @@
+import http from 'http';
 
-interface hola {
-    nombre: string;
-}
+const server = http.createServer((req, res) => {
+    console.log(req.url);
 
-console.log('Hello world!! :D');
+    res.write('Hello world!! :D');
+    res.end()
+});
+
+server.listen(8080, () => {
+    console.log('Server running on port 8080');
+});
