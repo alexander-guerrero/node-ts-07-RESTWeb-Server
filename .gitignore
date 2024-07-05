@@ -1,3 +1,6 @@
 
 # Ignorar módulos de Node :) 
 node_modules/
+
+# Ignorar keys 
+keys/
