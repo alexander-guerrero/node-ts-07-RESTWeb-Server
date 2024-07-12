@@ -4,3 +4,6 @@ node_modules/
 
 # Ignorar keys 
 keys/
+
+# Ignorar variables de entorno 
+.env
