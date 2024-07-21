@@ -13,6 +13,7 @@ export class TodosRoutes {
             todoController.getTodos // En JavaScript se puede abreviar, son equivalentes
         );
         router.get('/:id', todoController.getTodoById);
+        router.post('/', todoController.createTodo);
 
         return router;
 
