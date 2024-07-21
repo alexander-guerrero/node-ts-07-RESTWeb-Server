@@ -12,6 +12,7 @@ export class TodosRoutes {
             // (req, res) => todoController.getTodos(req, res)
             todoController.getTodos // En JavaScript se puede abreviar, son equivalentes
         );
+        router.get('/:id', todoController.getTodoById);
 
         return router;
 
