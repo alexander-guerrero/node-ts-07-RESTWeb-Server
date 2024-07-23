@@ -7,3 +7,6 @@ keys/
 
 # Ignorar variables de entorno 
 .env
+
+# Ignorar archivos producidos por PostgreSQL (raíz del proyecto) 
+/postgres/
