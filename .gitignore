@@ -10,3 +10,6 @@ keys/
 
 # Ignorar archivos producidos por PostgreSQL (raíz del proyecto) 
 /postgres/
+
+# Ignorar archivos producidos por el build 
+dist/
