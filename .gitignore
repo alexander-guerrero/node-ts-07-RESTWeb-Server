@@ -13,3 +13,6 @@ keys/
 
 # Ignorar archivos producidos por el build 
 dist/
+
+# Ignorar archivos de configuración del Editor/IDE
+.vscode/

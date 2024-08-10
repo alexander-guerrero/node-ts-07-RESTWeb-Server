@@ -1,12 +1,17 @@
 import { Router } from 'express';
 import { TodosController } from './controller';
+import { TodoRepositoryImpl } from '../../infrastructure/repositories/todo.repository.impl';
+import { TodoDatasourceImpl } from '../../infrastructure/datasources/todo.datasource.impl';
 
 export class TodosRoutes {
 
     static get routes(): Router {
 
         const router = Router();
-        const todoController = new TodosController();
+
+        const datasource = new TodoDatasourceImpl(); // datasource de PostgreSQL (prisma)
+        const todoRepositoryImpl = new TodoRepositoryImpl(datasource);
+        const todoController = new TodosController(todoRepositoryImpl);
 
         router.get('/', 
             // (req, res) => todoController.getTodos(req, res)
