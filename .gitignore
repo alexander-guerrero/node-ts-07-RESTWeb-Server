@@ -16,3 +16,6 @@ dist/
 
 # Ignorar archivos de configuración del Editor/IDE
 .vscode/
+
+# Ignorar archivos producidos por configuraciones del testing (raíz del proyecto) 
+/coverage/
