@@ -1,7 +1,6 @@
 import request from 'supertest';
 import { testServer } from '../../test-server';
 import { prisma } from '../../../src/data/postgres';
-import { error } from 'console';
 
 describe('Testing routes.ts', () => {
 
@@ -118,5 +117,32 @@ describe('Testing routes.ts', () => {
         });
 
     });
+
+    test('should return an updated TODO api/todos/:id', async () => {
+
+        const newTodo = await prisma.todo.create({
+            data: todo1
+        });
+        const todoToUpdate = {
+            text: 'Hello UPDATE! :D',
+            completedAt: '2024-08-18'
+        }
+
+        const { body } = await request(testServer.app)
+            .put(`/api/todos/${newTodo.id}`)
+            .send(todoToUpdate)
+            .expect(200)
+
+        expect(body).toEqual({
+            id: newTodo.id,
+            text: todoToUpdate.text,
+            completedAt: '2024-08-18T00:00:00.000Z'
+        });
+
+    });
+
+    // Tarea:
+    // should return 404 if TODO not found
+    // should return an updated TODO only the date
 
 });
