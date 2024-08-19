@@ -60,4 +60,21 @@ describe('Testing routes.ts', () => {
 
     });
 
+    test('should return Not Found api/todos/:id', async () => {
+
+        // 1. Arrange
+        const deletedId = 0;
+
+        // 2. Act
+        const { body } = await request(testServer.app)
+            .get(`/api/todos/${deletedId}`)
+            .expect(400)
+
+        // 3. Assert
+        expect(body).toEqual({
+            error: `Todo with id ${deletedId} not found`
+        });
+
+    });
+
 });
