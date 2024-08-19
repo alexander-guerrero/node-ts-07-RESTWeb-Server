@@ -34,7 +34,7 @@ export class TodosController {
 
         new CreateTodo(this.todoRepository)
             .execute(createTodoDto!) // Con "!" se indica al compilador que "createTodoDto" no puede ser "null" o "undefined"
-            .then( newTodo => res.json(newTodo) )
+            .then( newTodo => res.status(201).json(newTodo) )
             .catch( error => res.status(400).json({error}) );
 
     }
