@@ -68,7 +68,7 @@ describe('Testing routes.ts', () => {
         // 2. Act
         const { body } = await request(testServer.app)
             .get(`/api/todos/${deletedId}`)
-            .expect(400);
+            .expect(404);
 
         // 3. Assert
         expect(body).toEqual({
@@ -157,7 +157,7 @@ describe('Testing routes.ts', () => {
         const { body } = await request(testServer.app)
             .put(`/api/todos/${nonExistentId}`)
             .send(dataToUpdate)
-            expect(400);
+            .expect(404);
         
         expect(body).toEqual({
             error: `Todo with id ${nonExistentId} not found`
@@ -211,7 +211,7 @@ describe('Testing routes.ts', () => {
 
         const { body } = await request(testServer.app)
             .delete(`/api/todos/${nonExistentId}`)
-            .expect(400);
+            .expect(404);
 
         expect(body).toEqual({
             error: `Todo with id ${nonExistentId} not found`
