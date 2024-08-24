@@ -49,7 +49,7 @@ describe('Testing routes.ts', () => {
         // 2. Act
         const { body } = await request(testServer.app)
             .get(`/api/todos/${newTodo.id}`)
-            .expect(200)
+            .expect(200);
 
         // 3. Assert
         expect(body).toEqual({
@@ -68,7 +68,7 @@ describe('Testing routes.ts', () => {
         // 2. Act
         const { body } = await request(testServer.app)
             .get(`/api/todos/${deletedId}`)
-            .expect(400)
+            .expect(400);
 
         // 3. Assert
         expect(body).toEqual({
@@ -82,7 +82,7 @@ describe('Testing routes.ts', () => {
         const { body } = await request(testServer.app)
             .post('/api/todos')
             .send(todo1)
-            .expect(201)
+            .expect(201);
 
         expect(body).toEqual({
             id: expect.any(Number),
@@ -97,7 +97,7 @@ describe('Testing routes.ts', () => {
         const { body } = await request(testServer.app)
             .post('/api/todos')
             .send({  })
-            .expect(400)
+            .expect(400);
 
         expect(body).toEqual({
             error: 'Text property is required'
@@ -110,7 +110,7 @@ describe('Testing routes.ts', () => {
         const { body } = await request(testServer.app)
             .post('/api/todos')
             .send({ text: '' })
-            .expect(400)
+            .expect(400);
 
         expect(body).toEqual({
             error: 'Text property is required'
@@ -126,17 +126,17 @@ describe('Testing routes.ts', () => {
         const todoToUpdate = {
             text: 'Hello UPDATE! :D',
             completedAt: '2024-08-18'
-        }
+        };
 
         const { body } = await request(testServer.app)
             .put(`/api/todos/${newTodo.id}`)
             .send(todoToUpdate)
-            .expect(200)
+            .expect(200);
 
         expect(body).toEqual({
             id: newTodo.id,
             text: todoToUpdate.text,
-            completedAt: '2024-08-18T00:00:00.000Z'
+            completedAt: `${todoToUpdate.completedAt}T00:00:00.000Z`
         });
 
     });
@@ -144,5 +144,48 @@ describe('Testing routes.ts', () => {
     // Tarea:
     // should return 404 if TODO not found
     // should return an updated TODO only the date
+
+    // TODO: realizar la operación con errores personalizados
+    test('should return Not Found TODO when UPDATE api/todos/:id', async () => {
+        
+        const nonExistentId = 1;
+        const dataToUpdate = {
+            text: 'Hello UPDATE! :D',
+            completedAt: '2024-08-24'
+        };
+
+        const { body } = await request(testServer.app)
+            .put(`/api/todos/${nonExistentId}`)
+            .send(dataToUpdate)
+            expect(400);
+        
+        expect(body).toEqual({
+            error: `Todo with id ${nonExistentId} not found`
+        });
+
+    });
+
+    test('should return an updated TODO (only "completedAt" field) api/todos/:id', async () => {
+        
+        const newTodo = await prisma.todo.create({
+            data: todo1
+        });
+        const dataToUpdate = {
+            completedAt: '2024-08-24'
+        };
+
+        const { body } = await request(testServer.app)
+            .put(`/api/todos/${newTodo.id}`)
+            .send(dataToUpdate)
+            .expect(200);
+
+        expect(newTodo.completedAt).toBeNull();
+        expect(body.completedAt).not.toBeNull();
+        expect(body).toEqual({
+            ...newTodo, // todos los campos del objeto original creado
+            completedAt: `${dataToUpdate.completedAt}T00:00:00.000Z` // pero con el campo de fecha actualizado
+        });
+
+    });
 
 });
