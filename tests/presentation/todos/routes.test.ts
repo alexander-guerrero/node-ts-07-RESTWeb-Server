@@ -188,4 +188,35 @@ describe('Testing routes.ts', () => {
 
     });
 
+    test('should delete a TODO api/todos/:id', async () => {
+        
+        const newTodo = await prisma.todo.create({
+            data: todo1
+        });
+
+        const { body } = await request(testServer.app)
+            .delete(`/api/todos/${newTodo.id}`)
+            .expect(200);
+
+        expect(body).toEqual({
+            ...newTodo
+        });
+
+    });
+
+    // TODO: cambiar a 404
+    test('should return Not Found TODO when DELETE api/todos/:id', async () => {
+        
+        const nonExistentId = 1;
+
+        const { body } = await request(testServer.app)
+            .delete(`/api/todos/${nonExistentId}`)
+            .expect(400);
+
+        expect(body).toEqual({
+            error: `Todo with id ${nonExistentId} not found`
+        });
+
+    });
+
 });
