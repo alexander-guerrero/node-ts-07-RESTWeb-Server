@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { CreateTodoDto, UpdateTodoDto } from '../../domain/dtos';
-import { CreateTodo, DeleteTodo, GetTodo, GetTodos, TodoRepository, UpdateTodo } from '../../domain';
+import { CreateTodo, CustomError, DeleteTodo, GetTodo, GetTodos, TodoRepository, UpdateTodo } from '../../domain';
 
 export class TodosController {
 
@@ -22,7 +22,7 @@ export class TodosController {
         new GetTodo(this.todoRepository)
             .execute(id)
             .then( todo => res.json(todo) )
-            .catch( error => res.status(400).json({error}) );
+            .catch( (error: CustomError) => res.status(error.statusCode).json({error: error.message}) );
 
         // Al no tener return se podría seguir ejecutando código luego del try...catch
         
